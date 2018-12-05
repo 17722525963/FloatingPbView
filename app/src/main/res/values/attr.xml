@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloatingPbView">
+        <attr name="pbStrokeWidth" format="integer" />
+        <attr name="pbLineColor" format="color" />
+        <attr name="pbShadeColor" format="color" />
+    </declare-styleable>
+</resources>
