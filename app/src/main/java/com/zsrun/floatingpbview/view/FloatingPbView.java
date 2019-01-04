@@ -6,10 +6,13 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.zsrun.floatingpbview.BitmapUtil;
@@ -183,6 +186,14 @@ public class FloatingPbView extends View {
     }
 
     /**
+     * 设置是否展示奖励
+     */
+    public void setShowReward(boolean isShow) {
+        this.flag = isShow;
+        invalidate();
+    }
+
+    /**
      * 开始
      */
     public void start() {
@@ -190,6 +201,9 @@ public class FloatingPbView extends View {
         post(runnable);
     }
 
+    /**
+     * 重置进度，重新开始
+     */
     public void reStart() {
         //重置进度
         mCurrentProgress = 0;
@@ -199,6 +213,7 @@ public class FloatingPbView extends View {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
+
             removeCallbacks(this);//停止线程
             mCurrentProgress += 1; //每次加1
             invalidate();
@@ -208,7 +223,6 @@ public class FloatingPbView extends View {
                 invalidate();
                 postDelayed(runnable, mTotalTime / mCountProgress);
             }
-
             if (mOnProgressListener != null)
                 mOnProgressListener.onProgress(mCurrentProgress);
         }
@@ -251,7 +265,14 @@ public class FloatingPbView extends View {
         canvas.drawArc(rectFCircle, 0, 360, false, mPaint);
 
         mPaint.setColor(mLineColor);
-        canvas.drawArc(rectFCircle, 0, 360F / mCountProgress * mCurrentProgress, false, mPaint);//转为Float类型进行计算，否则可能导致被int类型丢失精度
+
+        //设置渐变色
+//        LinearGradient lg = new LinearGradient(0, 0, 100, 100, Color.RED, Color.BLUE, Shader.TileMode.MIRROR);  //参数一为渐变起初点坐标x位置，参数二为y轴位置，参数三和四分辨对应渐变终点，最后参数为平铺方式，这里设置为镜像
+//        mPaint.setShader(lg);
+
+        //设置线帽样式  取值有Cap.ROUND(圆形线帽)、Cap.SQUARE(方形线帽)、Paint.Cap.BUTT(无线帽)
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        canvas.drawArc(rectFCircle, -90, 360F / mCountProgress * mCurrentProgress, false, mPaint);//转为Float类型进行计算，否则可能导致被int类型丢失精度
 
         mBitmapBeford = BitmapUtil.getBitmapFromResource(getContext(), mImageBefore, mBounds.right / 3, mBounds.bottom / 3);
         mBitmapAfter = BitmapUtil.getBitmapFromResource(getContext(), mImageAfter, mBounds.right / 6, mBounds.bottom / 6);
@@ -265,25 +286,19 @@ public class FloatingPbView extends View {
          * 判断到99 后1-9 展示 奖励页面 (奖励页面需要绘制矩形进行展示，需要对外暴露方法传入奖励数值)
          *
          */
-        if (mCurrentProgress == 99) {
-            flag = true;
-        }
-        if (mCurrentProgress == 99 || mCurrentProgress < 10) {
-            if (flag) {
-                //装载奖励页面
-                canvas.drawBitmap(mBitmapAfter, (mBounds.right - mBitmapAfter.getWidth()) / 3, (mBounds.bottom - mBitmapAfter.getHeight()) / 2, mPaint);
-                mPaint.setColor(Color.RED);
-                mPaint.setTextSize(mAwardTextSize);
-                mPaint.setStyle(Paint.Style.FILL);
-                mPaint.setStrokeWidth(60);
-                mPaint.setAntiAlias(true);
-                mPaint.setDither(true);//设置是否使用图像抖动处理。会使绘制的图片等颜色更加的清晰以及饱满。
-                canvas.drawText("+", (float) (mBounds.right / 2 - mAwardTextSize / 4), (float) (mBounds.bottom / 2) + (float) (mAwardTextSize / 3), mPaint);
-                mPaint.setTextSize(mAwardTextSize);
-                canvas.drawText(mAwardText, (mBounds.right / 2 - (float) (mAwardTextSize / 2) + mBounds.right / 8), (float) (mBounds.bottom / 2) + (float) (mAwardTextSize / 3), mPaint);
-            } else {
-                canvas.drawBitmap(mBitmapBeford, (mBounds.right - mBitmapBeford.getWidth()) / 2, (mBounds.bottom - mBitmapBeford.getHeight()) / 2, mPaint);
-            }
+
+        if (flag) {
+            //装载奖励页面
+            canvas.drawBitmap(mBitmapAfter, (mBounds.right - mBitmapAfter.getWidth()) / 3, (mBounds.bottom - mBitmapAfter.getHeight()) / 2, mPaint);
+            mPaint.setColor(Color.RED);
+            mPaint.setTextSize(mAwardTextSize);
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setStrokeWidth(60);
+            mPaint.setAntiAlias(true);
+            mPaint.setDither(true);//设置是否使用图像抖动处理。会使绘制的图片等颜色更加的清晰以及饱满。
+            canvas.drawText("+", (float) (mBounds.right / 2 - mAwardTextSize / 4), (float) (mBounds.bottom / 2) + (float) (mAwardTextSize / 3), mPaint);
+            mPaint.setTextSize(mAwardTextSize);
+            canvas.drawText(mAwardText, (mBounds.right / 2 - (float) (mAwardTextSize / 2) + mBounds.right / 8), (float) (mBounds.bottom / 2) + (float) (mAwardTextSize / 3), mPaint);
         } else {
             canvas.drawBitmap(mBitmapBeford, (mBounds.right - mBitmapBeford.getWidth()) / 2, (mBounds.bottom - mBitmapBeford.getHeight()) / 2, mPaint);
         }

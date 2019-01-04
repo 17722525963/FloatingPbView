@@ -6,6 +6,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingPbView floatingPbView;
 
+    private RelativeLayout container;
 
     private TextView timeTv;
     private Button button;
@@ -26,16 +31,21 @@ public class MainActivity extends AppCompatActivity {
     private int currentTime = 0;
     private boolean flag = false;
 
+    private FrameLayout frameLayout;
+
+    private ImageView testimg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        container = findViewById(R.id.container);
+
         initView();
 
-        timeTv = (TextView) findViewById(R.id.time_tv);
-        button = (Button) findViewById(R.id.button);
+        timeTv = findViewById(R.id.time_tv);
+        button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,19 +53,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        img();
+
+        awdard();
+
+    }
+
+    private void awdard() {
+        findViewById(R.id.show_jiangli)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        floatingPbView.setShowReward(true);
+                    }
+                });
+
+        findViewById(R.id.hide_jiangli)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        floatingPbView.setShowReward(false);
+                    }
+                });
+    }
+
+    private void img() {
+        findViewById(R.id.xiaoshi)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        container.removeView(testimg);
+                    }
+                });
+
+        findViewById(R.id.xianshi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                container.addView(testimg);
+            }
+        });
     }
 
     private void initView() {
+        testimg = findViewById(R.id.testimg);
+        frameLayout = findViewById(R.id.testFrameLayout);
         floatingPbView = findViewById(R.id.floating_pb_view);
         floatingPbView.setTotalTime(10000);
+        floatingPbView.setCountProgress(600);
         floatingPbView.setImageBefore(R.drawable.fb_red_package);
         floatingPbView.setAwardTextSize(18);
         floatingPbView.setAwardText("30");
+        floatingPbView.setStrokeWidth(18);
 
         floatingPbView.setOnProgressListener(new FloatingPbView.OnProgressListener() {
             @Override
             public void onProgress(int progress) {
-                Log.i("???", "onProgress: " + Thread.currentThread().getName() + "----" + progress);
+//                Log.i("???", "onProgress: " + Thread.currentThread().getName() + "----" + progress);
             }
         });
 

@@ -1,33 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.zsrun.floatingpbview.view.FloatingPbView
-        android:id="@+id/floating_pb_view"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start"
-        tools:ignore="HardcodedText" />
 
-    <Button
-        android:id="@+id/stop"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/testimg"
+            android:layout_width="match_parent"
+            android:layout_height="116dp"
+            android:layout_toLeftOf="@id/floating_pb_view"
+            android:src="@drawable/test" />
+
+
+        <com.zsrun.floatingpbview.view.FloatingPbView
+            android:id="@+id/floating_pb_view"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="stop"
-        tools:ignore="HardcodedText" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/xiaoshi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="消失"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/xianshi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="显示"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stop"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/show_jiangli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="奖励" />
+
+        <Button
+            android:id="@+id/hide_jiangli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="消失" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/restart"
@@ -52,5 +117,17 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:text="Button" />
+
+    <FrameLayout
+        android:id="@+id/testFrameLayout"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:background="@color/colorAccent">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
 </LinearLayout>
